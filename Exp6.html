@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Drawing Tool</title>
+  <style>
+    .container {
+      border: 1px solid black;
+      padding: 10px;
+      width: 600px;
+      font-family: Arial, sans-serif;
+    }
+    svg {
+      border: 1px solid #333;
+      background-color: #f9f9f9;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h3>SVG Drawing Tool</h3>
+    <svg id="drawArea" width="550" height="400"></svg>
+  </div>
+
+  <script>
+    const svg = document.getElementById("drawArea");
+    let isDrawing = false;
+    let currentPath = null;
+
+    svg.addEventListener("mousedown", (e) => {
+  isDrawing = true;
+  const point = getMousePosition(e);
+  currentPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  currentPath.setAttribute("stroke", "blue");
+  currentPath.setAttribute("stroke-width", "2");
+  currentPath.setAttribute("fill", "none");
+  currentPath.setAttribute("d", `M${point.x},${point.y}`);
+  svg.appendChild(currentPath);
+});
+
+svg.addEventListener("mousemove", (e) => {
+  if (!isDrawing) return;
+  const point = getMousePosition(e);
+  const d = currentPath.getAttribute("d");
+  currentPath.setAttribute("d", `${d} L${point.x},${point.y}`);
+});
+
+
+    function getMousePosition(evt) {
+      const CTM = svg.getScreenCTM();
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      };
+    }
+  </script>
+
+</body>
+</html>
