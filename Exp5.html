@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Filter</title>
+  <style>
+    .container {
+      border: 1px solid #000;
+      padding: 15px;
+      margin: 20px;
+      width: 400px;
+      font-family: Arial, sans-serif;
+    }
+    .product {
+      padding: 8px;
+      border: 1px solid #ccc;
+      margin: 5px 0;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+    select {
+      margin-bottom: 15px;
+      padding: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h3>Product List</h3>
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter">
+      <option value="All">All</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Books">Books</option>
+    </select>
+
+    <div id="productList"></div>
+  </div>
+
+  <script>
+    const products = [
+      { name: 'T-Shirt', category: 'Clothing' },
+      { name: 'Jeans', category: 'Clothing' },
+      { name: 'Headphones', category: 'Electronics' },
+      { name: 'Smartphone', category: 'Electronics' },
+      { name: 'Novel', category: 'Books' },
+      { name: 'Cookbook', category: 'Books' }
+    ];
+
+    const productList = document.getElementById('productList');
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    function displayProducts(filteredProducts) {
+      productList.innerHTML = '';
+      filteredProducts.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.textContent = product.name;
+        productList.appendChild(div);
+      });
+    }
+
+    function filterProducts() {
+      const selectedCategory = categoryFilter.value;
+      if (selectedCategory === 'All') {
+        displayProducts(products);
+      } else {
+        const filtered = products.filter(p => p.category === selectedCategory);
+        displayProducts(filtered);
+      }
+    }
+
+    categoryFilter.addEventListener('change', filterProducts);
+
+    // Initial display
+    displayProducts(products);
+  </script>
+
+</body>
+</html>
